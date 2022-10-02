@@ -7,9 +7,9 @@ SLEEP=1
 load=
 # get gpu load and switch to fast mode if not used by miner
 if [[ -e /sys/class/drm/card$cardno/device/gpu_busy_percent ]]; then
-    load=`head -1 /sys/class/drm/card$cardno/device/gpu_busy_percent 2>/dev/null
+    load=`head -1 /sys/class/drm/card$cardno/device/gpu_busy_percent 2>/dev/null`
 elif [[ -e /sys/kernel/debug/dri/$cardno/amdgpu_pm_info ]]; then
-    load=`grep -m1 'GPU Load' /sys/kernel/debug/dri/$cardno/amdgpu_pm_info 2>/de
+    load=`grep -m1 'GPU Load' /sys/kernel/debug/dri/$cardno/amdgpu_pm_info 2>/dev/null | awk '{printf("%d", $3)}'`
 fi
 [[ $load == 0 ]] && SLEEP="0.1"
 
